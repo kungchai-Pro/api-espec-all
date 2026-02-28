@@ -50,12 +50,13 @@ router.post('/searchJournalByfieldItemId',DocumentController.SearchJourByfieldIt
 
 router.put('/updateDocument/:id',DocumentController.updateDocument);
 router.put('/updateFlowState/:id',DocumentController.updateFlowState)
+router.put('/updateDacumentStatusCancel/:id',DocumentController.updateDacumentStatusCancel) // update active = 0 เมื่อยกเลิกเอกสาร กรณีที่ยังไม่ส่งเอกสาร
+
 router.put('/updateDetail/:id',DocumentController.updateDetailById)
 router.put('/updateDetailByItem/:id',DocumentController.UpdateDetailByItem) //update detail by item id
 router.put('/updateDetailBatch/:id',DocumentController.UpdateDetailBatch) //update detail by Batch 
 
 router.put('/updateSpecification/:id',DocumentController.Update_Specification)
-
 router.put('/updateSpecall/:id',DocumentController.updateSpecall);
 
 

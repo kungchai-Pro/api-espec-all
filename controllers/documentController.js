@@ -862,6 +862,61 @@ class DocumentController {
         });
     }
 
+    // กรณีที่ยกเลิกเอกสาร
+    updateDacumentStatusCancel(req, res) {
+        const { id } = req.params
+        const { StandardCode, Revise } = req.body
+       
+        
+        var dataupdate = `UPDATE SDSS_Head SET  Actives='0',statusflow='200' WHERE JournalID=${id}`;
+
+        conn.query(dataupdate, function (err, results, fields) {
+            if (err) {
+                console.log(err);
+                return res.status(400).json({ status: 400, error: true, message: "Error: Could not add SDSS_Head" });
+            }
+
+            if (res.status(200)) {
+                // กรณีที่ สร้าง menu list  
+                if (results.affectedRows == 1) {
+                    UpdatejournalAction(StandardCode, Revise)
+                    res.json({ status: 200, error: false, message: 'update SDSS_Head successfully' })
+                }
+                else {
+                    res.json({ status: 400, error: true, message: 'update SDSS_Head fialed' })
+                }
+            }
+        });
+
+        function UpdatejournalAction(StandardCode, Revise) {
+            var revisenew = parseInt(Revise) - 1;
+           
+
+            var jourdata = `UPDATE SDSS_Head SET Actives='1' WHERE StandardCode='${StandardCode}' AND Revise='${revisenew}'`;
+            conn.query(jourdata, function (err, results, fields) {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json({ status: 400, error: true, message: "Error: Could not add SDSS_Head" });
+                }
+
+                if (res.status(200)) {
+                    // กรณีที่   อัพเดท เสร็จให้แสดงข้อมูล ลง log
+                    if (results.affectedRows == 1) {
+                        console.log(res)
+                    }
+                    else {
+                         console.log(res)
+                        // res.json({ status: 400, error: true, message: 'update SDSS_Head fialed' })
+                    }
+                }
+            });
+
+
+
+        }
+    }
+
+
     DocumentAll(req, res) {
 
         var seleted = `SELECT ROW_NUMBER() OVER (ORDER BY sh.JournalID) AS num,
@@ -1197,7 +1252,7 @@ WHERE fr.activetoall='1' AND sh.JournalGroupID='' AND fr.approveById=${id} AND f
     sh.RefgroupCode
 FROM 
 	SDSS_Head sh
-WHERE  sh.Actives='1' AND sh.JournalGroupID='' AND sh.UserIDConfirm='${id}' ORDER BY sh.JournalCode DESC ;`;
+WHERE  sh.Actives='1' AND sh.JournalGroupID='' AND sh.UserIDConfirm='${id}' OR sh.statusflow='200' ORDER BY sh.JournalCode DESC ;`;
 
         conn.query(dataall, async function (err, results, fields) {
             if (err) {
@@ -1995,8 +2050,8 @@ WHERE  fr.approveById=${id} AND sh.Actives='1' AND sh.statusflow='101' ORDER BY 
 
         var updatedata = `UPDATE SDSS_Details SET Batch1='${Batch1}',BatchDetail1='${BatchDetail1}',BatchExample1='${BatchExample1}',
             Batch2='${Batch2}',BatchDetail2='${BatchDetail2}',BatchExample2='${BatchExample2}',BatchNo='${BatchNo}',TypeBatch='${TypeBatch}' WHERE JournalID=${id}`;
-        
-            conn.query(updatedata, function (err, results, fields) {
+
+        conn.query(updatedata, function (err, results, fields) {
             if (err) {
                 console.log(err);
                 return res.status(400).json({ status: 400, error: true, message: "Error: Could not add SDSS_Details" });
