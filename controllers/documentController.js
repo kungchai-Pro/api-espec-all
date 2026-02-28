@@ -881,6 +881,7 @@ class DocumentController {
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
     sh.recievejob,
@@ -1117,6 +1118,7 @@ FROM flowrunsystem WHERE documentId=sh.JournalID LIMIT 1) as flowdetail,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
     sh.recievejob, 
@@ -1174,6 +1176,7 @@ WHERE fr.activetoall='1' AND sh.JournalGroupID='' AND fr.approveById=${id} AND f
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
     sh.recievejob, 
@@ -1228,6 +1231,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1281,6 +1285,7 @@ sh.recievejob,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1329,6 +1334,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1375,6 +1381,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1386,9 +1393,10 @@ sh.UserIDConfirm,
  WHERE fr.documentId=sh.JournalID AND fr.stateflow=sh.stateflow order by fr.stateflow DESC LIMIT 1) AS activeapproved,
 sh.Actives,
 sh.StandardCode,
-sh.RefgroupCode
+sh.RefgroupCode,
+sh.stamptimeUpdate
 FROM SDSS_Head sh 
-WHERE  sh.statusflow='105' AND sh.Actives='1' ORDER BY sh.JournalCode DESC`;
+WHERE  sh.statusflow='105' AND sh.Actives='1' ORDER BY sh.stamptimeUpdate  DESC`;
 
         conn.query(dataselect, async function (err, results, fields) {
             if (err) {
@@ -1489,6 +1497,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1537,6 +1546,7 @@ sh.recievejob,
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1588,6 +1598,7 @@ sh.recievejob,
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1642,6 +1653,7 @@ sh.recievejob,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1690,6 +1702,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
 sh.UserIDConfirm,
@@ -1741,6 +1754,7 @@ WHERE  fr.approveById=${id} AND sh.Actives='1' AND sh.statusflow='101' ORDER BY 
                 WHEN sh.statusflow='104' THEN 'Approved'
                 WHEN sh.statusflow='105' THEN 'Successful'
                 WHEN sh.statusflow='211' THEN 'EditReject'
+                WHEN sh.statusflow='200' THEN 'Cancel'
                 END
                 )as statusName,
                 sh.UserIDConfirm,
@@ -2433,7 +2447,7 @@ where
     (SELECT SDSS_Details.ItemName FROM SDSS_Details WHERE SDSS_Details.JournalID=spf.JourId)AS ItemName 
 FROM 
 	SDSS_Specification  spf 
-	WHERE spf.JournalCode='${id}'`;
+	WHERE spf.JournalCode='${id}' order by spf.SlotNo ASC`;
 
         conn.query(datat, async function (err, results, fields) {
             if (err) {

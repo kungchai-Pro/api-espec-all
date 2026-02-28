@@ -88,7 +88,7 @@ class JournalImagesController {
      from SDSS_Details WHERE SDSS_Details.JournalID=spf.JourId ) as PkDescription 
 FROM 
 	journalImages  spf 
-	WHERE spf.JournalCode='${id}'`;
+	WHERE spf.JournalCode='${id}' order by spf.SlotNo asc`;
 
         conn.query(datat, async function (err, results, fields) {
             if (err) {

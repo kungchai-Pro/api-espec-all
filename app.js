@@ -34,6 +34,7 @@ var batchversionRoute = require('./routes/batchversionRoute');
 var PackagingDetailRoute = require('./routes/packaginDetailRoute');
 var notejournalgroup = require('./routes/noteJournalgroupRoute');
 var noterejectgroupRoute = require('./routes/noterejectgroupRoute');
+var notecancelRoute = require('./routes/notecancelRoute');
 
 
 global.__basedir = __dirname;
@@ -82,6 +83,7 @@ app.use('/api/spec/batchversion', batchversionRoute);
 app.use('/api/spec/packagingDetail', PackagingDetailRoute);
 app.use('/api/spec/notejournalgroup', notejournalgroup);
 app.use('/api/spec/noterejectgroup', noterejectgroupRoute);
+app.use('/api/spec/notecancel', notecancelRoute);
 
 
 // catch 404 and forward to error handler
