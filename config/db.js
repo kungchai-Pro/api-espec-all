@@ -16,9 +16,9 @@ const mysql = require('mysql2');
 // module.exports=pool;
 
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password:'',
+    host: '27.254.142.146',
+    user: 'admin',
+    password:'adminPass888!',
     database: 'espec_db',
     waitForConnections: true,
     connectionLimit: 10,
