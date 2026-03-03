@@ -936,6 +936,7 @@ class DocumentController {
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1173,6 +1174,7 @@ FROM flowrunsystem WHERE documentId=sh.JournalID LIMIT 1) as flowdetail,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1231,6 +1233,7 @@ WHERE fr.activetoall='1' AND sh.JournalGroupID='' AND fr.approveById=${id} AND f
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1286,6 +1289,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1340,6 +1344,7 @@ sh.recievejob,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1389,6 +1394,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1436,6 +1442,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1552,6 +1559,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1601,6 +1609,7 @@ sh.recievejob,
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1653,6 +1662,7 @@ sh.recievejob,
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1708,6 +1718,7 @@ sh.recievejob,
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1757,6 +1768,7 @@ WHEN sh.statusflow='100' THEN 'Creat'
  WHEN sh.statusflow='104' THEN 'Approved'
  WHEN sh.statusflow='105' THEN 'Successful'
  WHEN sh.statusflow='211' THEN 'EditReject'
+ WHEN sh.statusflow='201' THEN 'Reject'
  WHEN sh.statusflow='200' THEN 'Cancel'
  END
 )as statusName,
@@ -1809,6 +1821,7 @@ WHERE  fr.approveById=${id} AND sh.Actives='1' AND sh.statusflow='101' ORDER BY 
                 WHEN sh.statusflow='104' THEN 'Approved'
                 WHEN sh.statusflow='105' THEN 'Successful'
                 WHEN sh.statusflow='211' THEN 'EditReject'
+                WHEN sh.statusflow='201' THEN 'Reject'
                 WHEN sh.statusflow='200' THEN 'Cancel'
                 END
                 )as statusName,
@@ -2156,7 +2169,7 @@ WHERE  fr.approveById=${id} AND sh.Actives='1' AND sh.statusflow='101' ORDER BY 
             UserIDConfirm,ConfirmDateTime,
             JournalCode 
         FROM 
-            SDSS_Details WHERE JournalCode='${id}' order by SlotNo ASC`;
+            SDSS_Details WHERE JournalCode='${id}' order by CAST(SlotNo AS UNSIGNED) ASC`;
 
         conn.query(dataall, async function (err, results, fields) {
             if (err) {
@@ -2502,7 +2515,7 @@ where
     (SELECT SDSS_Details.ItemName FROM SDSS_Details WHERE SDSS_Details.JournalID=spf.JourId)AS ItemName 
 FROM 
 	SDSS_Specification  spf 
-	WHERE spf.JournalCode='${id}' order by spf.SlotNo ASC`;
+	WHERE spf.JournalCode='${id}' order by CAST(spf.SlotNo AS UNSIGNED) ASC`;
 
         conn.query(datat, async function (err, results, fields) {
             if (err) {
