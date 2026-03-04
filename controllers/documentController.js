@@ -2515,7 +2515,7 @@ where
     (SELECT SDSS_Details.ItemName FROM SDSS_Details WHERE SDSS_Details.JournalID=spf.JourId)AS ItemName 
 FROM 
 	SDSS_Specification  spf 
-	WHERE spf.JournalCode='${id}' order by CAST(spf.SlotNo AS UNSIGNED) ASC`;
+	WHERE spf.JournalCode='${id}' order by CAST(spf.SlotNoSpec AS UNSIGNED) ASC`;
 
         conn.query(datat, async function (err, results, fields) {
             if (err) {
